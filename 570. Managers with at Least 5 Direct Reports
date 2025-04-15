@@ -1,0 +1,15 @@
+#code in mysql with cross join
+
+select cte.name from
+(select distinct e2.id,count(e1.id) over (partition by e2.id) as counter,e2.name from Employee as e1 cross join Employee as e2 on e1.managerId = e2.id) as cte where cte.counter >= 5
+
+
+################################################################################
+
+
+#code in mysql without cross join
+
+with temp as (
+select managerId, count(id) as counter from Employee group by managerId)
+
+select name from Employee where id in (select managerId from temp where counter>=5)
