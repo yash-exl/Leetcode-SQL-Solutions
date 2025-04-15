@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+with temp as(
+select *,row_number() over(order by id) as row_c from Stadium where people >= 100),
+
+temp2 as (
+select *,(id-row_c) as diff from temp)
+
+select id,visit_date,people from temp2 where diff in (select diff from temp2 group by diff having count(diff) >= 3)
