@@ -1,0 +1,9 @@
+# Write your MySQL query statement below
+
+with temp as(
+select requester_id from RequestAccepted union all select accepter_id from RequestAccepted),
+
+temp2 as(
+select requester_id as id, count(requester_id) as num from temp group by requester_id)
+
+select * from temp2 where num = (select max(num) from temp2)
