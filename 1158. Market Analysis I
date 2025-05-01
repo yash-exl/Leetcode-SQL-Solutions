@@ -1,0 +1,4 @@
+with temp as (
+select o.order_date,o.buyer_id from Orders as o where Year(o.order_date) = 2019)
+
+select distinct(u.user_id) as buyer_id, u.join_date,count(t.buyer_id) over(partition by u.user_id) as orders_in_2019 from Users as u left join temp as t on t.buyer_id = u.user_id
